@@ -7,7 +7,7 @@ app = Flask(__name__)
 # 爬蟲函數
 def get_discounts(location):
     # 模擬爬取優惠食品的網站（範例 URL，可以換成實際便利商店的促銷頁面）
-    url = f"https://example.com/discounts?location={location}"
+    url = f"https://familymap.pages.dev/friendly/a/407={location}"
     headers = {"User-Agent": "Mozilla/5.0"}
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.text, "html.parser")

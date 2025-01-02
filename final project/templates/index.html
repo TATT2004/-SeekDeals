@@ -4,19 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>便利商店優惠食品查詢</title>
+    <title>折折搜SeekDeals</title>
 </head>
 
 <body>
-    <h1>查詢附近便利商店的優惠食品</h1>
-    <form method="post">
-        <label for="location">請輸入位置：</label>
-        <input type="text" id="location" name="location" required>
-        <button type="submit">查詢</button>
-    </form>
+    <h1>台中西屯區的便利商店優惠食品</h1>
 
     {% if discounts %}
-    <h2>優惠食品列表（{{ location }}）</h2>
+    <h2>優惠食品列表</h2>
     <ul>
         {% for item in discounts %}
         <li>
@@ -25,7 +20,7 @@
         {% endfor %}
     </ul>
     {% else %}
-    <p>目前無優惠資訊，請嘗試其他位置。</p>
+    <p>目前無優惠資訊。</p>
     {% endif %}
 </body>
 
