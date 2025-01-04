@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首頁</title>
+    <style>
+        a img {
+            transition: transform 0.3s ease;
+        }
+        a img:hover {
+            transform: scale(1.1); /* 放大 10% */
+        }
+    </style>
+</head>
+<body>
+    <h3>關注店家</h3>
+    <h3>所有店家</h3>
+    <a href="{{ url_for('mcdonal') }}">
+        <img src="{{ url_for('static', filename='mcdonal/images/mcdonal2.png') }}" alt="mcdonal">
+    </a>
+    <button type="button" id="focusBtn">關注</button>
+</body>
+</html>

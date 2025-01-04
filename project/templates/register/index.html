@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>註冊</title>
+</head>
+<body>
+    <div id="register">
+        <form action="/">
+            <button type="submit">上一頁</button>
+        </form>
+        <form id="register-Form">
+            <label for="username">帳號</label>
+            <input type="text" id="username" name="username">
+            <label for="password">密碼</label>
+            <input type="password" id="password" name="password">
+            <button type="button" id="registerBtn">註冊</button>
+        </form>
+    </div>
+    <script>
+        const registerBtn = document.getElementById('registerBtn');
+        
+        registerBtn.addEventListener('click', async function() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            if (!username || !password) {
+                alert('請輸入帳號與密碼');
+                return;
+            }
+
+            const data = { username, password };
+            
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    alert(`${result.message}`);
+                } else {
+                    const error = await response.json();
+                    alert(`${error.message}`);
+                }
+            } catch (err) {
+                alert(`錯誤：${err.message}`);
+            }
+        });
+    </script>
+</body>
+</html>
