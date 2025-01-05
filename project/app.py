@@ -175,6 +175,13 @@ def mcdonal():
         data = json.load(f)
     return render_template('store/mcdonal.html', data=data)
 
+@app.route('/store/kfc')
+def kfc():
+    data = {}
+    with open('static/kfc/discounts.json', 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    return render_template('store/kfc.html', data=data)
+
 if __name__ == "__main__":
     users = {}
     if os.path.exists('users.json'):
