@@ -92,12 +92,40 @@ def register():
     if username in users:
         return jsonify({'message': '帳號已存在'}), 400
 
-    users[username] =  {'password': password, 'logged': False}
+    users[username] =  {'password': password, 'logged': False , 'attention' : []}
     with open('users.json', 'w') as f:
         json.dump(users, f, indent=4)
 
     # 註冊成功
     return jsonify({'message': '註冊成功！'}), 200
+
+@app.route('/attention', methods=['POST'])
+def attention():
+    data = request.get_json()
+    username = data.get('username')
+    shop = data.get('shop')
+
+    users = {}
+    if os.path.exists('users.json'):
+        with open('users.json', 'r') as f:
+            try:
+                users = json.load(f)
+            except json.JSONDecodeError:
+                users = {}
+
+    attention_list = users[username]['attention']
+    # 檢查是否已關注
+    if shop in attention_list :
+        return jsonify({'message': '此店家已關注'}), 400
+    
+    # 系統存取資料
+    attention_list.append(shop)
+
+    with open('users.json', 'w') as f:
+        json.dump(users, f, indent=4)
+    
+    # 關注成功
+    return jsonify({'message': '關注成功!'}), 200
 
 @app.route('/home')
 def home():

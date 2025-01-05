@@ -20,5 +20,35 @@
         <img src="{{ url_for('static', filename='mcdonal/images/mcdonal2.png') }}" alt="mcdonal">
     </a>
     <button type="button" id="focusBtn">關注</button>
+    <script>
+        const focusBtn = document.getElementById('focusBtn');
+        
+        focusBtn.addEventListener('click', async function() {
+            const username = 'a'
+            const shop = 'mcdonal'
+            
+            const data = {username , shop};
+
+            try {
+                const response = await fetch('/attention', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    alert(`${result.message}`);
+                } else {
+                    const error = await response.json();
+                    alert(`${error.message}`);
+                }
+            } catch (err) {
+                alert(`錯誤：${err.message}`);
+            }
+        });
+    </script>
 </body>
 </html>

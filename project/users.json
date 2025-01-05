@@ -1,6 +1,7 @@
 {
     "a": {
         "password": "a",
-        "logged": false
+        "logged": true,
+        "attention": []
     }
 }
