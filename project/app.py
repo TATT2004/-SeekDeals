@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify, redirect, url_for, session
 import requests, json, os
 from bs4 import BeautifulSoup
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'
 family_url = 'https://www.family.com.tw/Marketing/zh/Event#03'
 mcdonal_url = 'https://www.mcdonalds.com/tw/zh-tw/whats-hot.html'
 
@@ -69,6 +70,10 @@ def login():
     with open('users.json', 'w') as f:
         json.dump(users, f, indent=4)
 
+    session['user'] = {
+        'username': username,
+        **users[username]
+    }
     return jsonify({'message': '登入成功', 'redirect': url_for('home')}), 200
 
 @app.route('/register/index')
@@ -124,12 +129,44 @@ def attention():
     with open('users.json', 'w') as f:
         json.dump(users, f, indent=4)
     
+    session['user'] = {
+        'username': username,
+        **users[username]
+    }
     # 關注成功
-    return jsonify({'message': '關注成功!'}), 200
+    return jsonify({'message': '關注成功!', 'redirect': url_for('home')}), 200
+
+@app.route('/unfollow', methods=['POST'])
+def unfollow():
+    data = request.get_json()
+    username = data.get('username')
+    shop = data.get('shop')
+
+    users = {}
+    if os.path.exists('users.json'):
+        with open('users.json', 'r') as f:
+            try:
+                users = json.load(f)
+            except json.JSONDecodeError:
+                users = {}
+
+    if shop not in users[username]['attention']:
+        return jsonify({'message': '取消關注失敗'}), 400
+    
+    users[username]['attention'].remove(shop)
+
+    with open('users.json', 'w') as f:
+        json.dump(users, f, indent=4)
+    
+    session['user'] = {
+        'username': username,
+        **users[username]
+    }
+    return jsonify({'message': '取消關注成功!', 'redirect': url_for('home')}), 200
 
 @app.route('/home')
 def home():
-    return render_template('home.html')
+    return render_template('home.html', user=session['user'])
 
 @app.route('/store/mcdonal')
 def mcdonal():

@@ -14,41 +14,88 @@
     </style>
 </head>
 <body>
+    <h2>用戶名稱：{{ user.username }}</h2>
     <h3>關注店家</h3>
+    {% if 'mcdonal' in user.attention %}
+        <a href="{{ url_for('mcdonal') }}">
+            <img src="{{ url_for('static', filename='mcdonal/images/mcdonal2.png') }}" alt="mcdonal">
+        </a>
+    {% endif %}
     <h3>所有店家</h3>
     <a href="{{ url_for('mcdonal') }}">
         <img src="{{ url_for('static', filename='mcdonal/images/mcdonal2.png') }}" alt="mcdonal">
     </a>
-    <button type="button" id="focusBtn">關注</button>
+    {% if 'mcdonal' in user.attention %}
+        <button type="button" id="mcdonal-cancel-focus-btn">取消關注</button>
+    {% else %}
+        <button type="button" id="mcdonal-focus-btn">關注</button>
+    {% endif %}
     <script>
-        const focusBtn = document.getElementById('focusBtn');
-        
-        focusBtn.addEventListener('click', async function() {
-            const username = 'a'
-            const shop = 'mcdonal'
-            
-            const data = {username , shop};
+        console.log('{{ user.attention }}');
+        const mcdonalFocusBtn = document.getElementById('mcdonal-focus-btn');
+        const mcdonalCancelFocusBtn = document.getElementById('mcdonal-cancel-focus-btn');
+    
+        if(mcdonalFocusBtn){
+            mcdonalFocusBtn.addEventListener('click', async function() {
+                const username = "{{ user.username }}";
+                const shop = 'mcdonal';
+                
+                const data = {username , shop};
 
-            try {
-                const response = await fetch('/attention', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
+                try {
+                    const response = await fetch('/attention', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
 
-                if (response.ok) {
-                    const result = await response.json();
-                    alert(`${result.message}`);
-                } else {
-                    const error = await response.json();
-                    alert(`${error.message}`);
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
                 }
-            } catch (err) {
-                alert(`錯誤：${err.message}`);
-            }
-        });
+            });
+        }
+
+        if(mcdonalCancelFocusBtn){
+            mcdonalCancelFocusBtn.addEventListener('click', async function() {
+                console.log('test');
+                const username = "{{ user.username }}";
+                const shop = 'mcdonal';
+                
+                const data = {username , shop};
+
+                try {
+                    const response = await fetch('/unfollow', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
+                }
+            });
+        }
+        
     </script>
 </body>
 </html>
