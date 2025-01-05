@@ -2,6 +2,8 @@
     "a": {
         "password": "a",
         "logged": true,
-        "attention": []
+        "attention": [
+            "mcdonal"
+        ]
     }
 }

@@ -1,27 +1,117 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>登入</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            color: #007bff;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            margin: 15px 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        button[type="submit"] {
+            background-color: initial;
+            color: initial;
+            padding: initial;
+            font-size: initial;
+            border: initial;
+            border-radius: initial;
+            cursor: pointer;
+            text-align: initial;
+        }
+
+        button[type="submit"]:hover {
+            background-color: initial;
+        }
+
+        button#loginBtn {
+            background-color: #007bff;
+            color: white;
+        }
+
+        button#loginBtn:hover {
+            background-color: #0056b3;
+        }
+
+        #login {
+            max-width: 400px;
+            padding: 20px;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            button {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+
+            input {
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
+
 <body>
+    <form action="/">
+        <button type="submit">上一頁</button>
+    </form>
     <div id="login">
-        <form action="/">
-            <button type="submit">上一頁</button>
-        </form>
         <form id="login-Form">
             <label for="username">帳號</label>
-            <input type="text" id="username" name="username">
+            <input type="text" id="username" name="username" placeholder="請輸入帳號">
             <label for="password">密碼</label>
-            <input type="password" id="password" name="password">
+            <input type="password" id="password" name="password" placeholder="請輸入密碼">
             <button type="button" id="loginBtn">登入</button>
         </form>
     </div>
     <script>
         const registerBtn = document.getElementById('loginBtn');
-        
-        registerBtn.addEventListener('click', async function() {
+
+        registerBtn.addEventListener('click', async function () {
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value.trim();
 
@@ -31,7 +121,7 @@
             }
 
             const data = { username, password };
-            
+
             try {
                 const response = await fetch('/login', {
                     method: 'POST',
@@ -55,4 +145,5 @@
         });
     </script>
 </body>
+
 </html>
