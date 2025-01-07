@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首頁</title>
+    <style>
+        a img {
+            transition: transform 0.3s ease;
+        }
+
+        a img:hover {
+            transform: scale(1.1);
+            /* 放大 10% */
+        }
+    </style>
+</head>
+
+<body>
+    <h2>用戶名稱：{{ user.username }}</h2>
+    <form action="/logout">
+        <button>登出</button>
+    </form>
+    <h3>關注店家</h3>
+
+    {% if 'mcdonal' in user.attention %}
+        <a href="{{ url_for('mcdonal') }}">
+            <img src="{{ url_for('static', filename='mcdonal/images/mcdonal2.png') }}" alt="mcdonal">
+        </a>
+        <button type="button" id="mcdonal-cancel-focus-btn">取消關注</button>
+    {% endif %}
+
+    {% if 'kfc' in user.attention %}
+        <a href="{{ url_for('kfc') }}">
+            <img src="{{ url_for('static', filename='kfc/images/kfc.png') }}" alt="kfc">
+        </a>
+        <button type="button" id="kfc-cancel-focus-btn">取消關注</button>
+    {% endif %}
+
+    {% if 'pizzahut' in user.attention %}
+        <a href="{{ url_for('pizzahut') }}">
+            <img src="{{ url_for('static', filename='pizzahut/images/pizzahut.png') }}" alt="pizzahut">
+        </a>
+        <button type="button" id="pizzahut-cancel-focus-btn">取消關注</button>
+    {% endif %}
+
+    {% if 'domino' in user.attention %}
+        <a href="{{ url_for('domino') }}">
+            <img src="{{ url_for('static', filename='domino/images/domino.png') }}" alt="domino">
+        </a>
+        <button type="button" id="domino-cancel-focus-btn">取消關注</button>
+    {% endif %}
+
+    {% if 'burgerking' in user.attention %}
+        <a href="{{ url_for('burgerking') }}">
+            <img src="{{ url_for('static', filename='burgerking/images/burgerking.png') }}" alt="burgerking">
+        </a>
+        <button type="button" id="burgerking-cancel-focus-btn">取消關注</button>
+    {% endif %}
+
+    {% if 'subway' in user.attention %}
+        <a href="{{ url_for('subway') }}">
+            <img src="{{ url_for('static', filename='subway/images/subway.png') }}" alt="subway">
+        </a>
+        <button type="button" id="subway-cancel-focus-btn">取消關注</button>
+    {% endif %}
+
+    {% if 'tkk' in user.attention %}
+        <a href="{{ url_for('tkk') }}">
+            <img src="{{ url_for('static', filename='tkk/images/tkk.png') }}" alt="tkk">
+        </a>
+        <button type="button" id="tkk-cancel-focus-btn">取消關注</button>
+    {% endif %}
+
+    <h3>所有店家</h3>
+
+    <a href="{{ url_for('mcdonal') }}">
+        <img src="{{ url_for('static', filename='mcdonal/images/mcdonal2.png') }}" alt="mcdonal">
+    </a>
+    <button type="button" id="mcdonal-focus-btn">關注</button>
+
+    <a href="{{ url_for('kfc') }}">
+        <img src="{{ url_for('static', filename='kfc/images/kfc.png') }}" alt="kfc">
+    </a>
+    <button type="button" id="kfc-focus-btn">關注</button>
+
+    <a href="{{ url_for('pizzahut') }}">
+        <img src="{{ url_for('static', filename='pizzahut/images/pizzahut.png') }}" alt="pizzahut">
+    </a>
+    <button type="button" id="pizzahut-focus-btn">關注</button>
+
+    <a href="{{ url_for('domino') }}">
+        <img src="{{ url_for('static', filename='domino/images/domino.png') }}" alt="domino">
+    </a>
+    <button type="button" id="domino-focus-btn">關注</button>
+
+    <a href="{{ url_for('burgerking') }}">
+        <img src="{{ url_for('static', filename='burgerking/images/burgerking.png') }}" alt="burgerking">
+    </a>
+    <button type="button" id="burgerking-focus-btn">關注</button>
+
+    <a href="{{ url_for('subway') }}">
+        <img src="{{ url_for('static', filename='subway/images/subway.png') }}" alt="subway">
+    </a>
+    <button type="button" id="subway-focus-btn">關注</button>
+
+    <a href="{{ url_for('tkk') }}">
+        <img src="{{ url_for('static', filename='tkk/images/tkk.png') }}" alt="tkk">
+    </a>
+    <button type="button" id="tkk-focus-btn">關注</button>
+
+    <script>
+        console.log('{{ user.attention }}');
+        const mcdonalFocusBtn = document.getElementById('mcdonal-focus-btn');
+        const mcdonalCancelFocusBtn = document.getElementById('mcdonal-cancel-focus-btn');
+
+        if (mcdonalFocusBtn) {
+            mcdonalFocusBtn.addEventListener('click', async function () {
+                const username = "{{ user.username }}";
+                const shop = 'mcdonal';
+
+                const data = { username, shop };
+
+                try {
+                    const response = await fetch('/attention', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
+                }
+            });
+        }
+
+        if (mcdonalCancelFocusBtn) {
+            mcdonalCancelFocusBtn.addEventListener('click', async function () {
+                console.log('test');
+                const username = "{{ user.username }}";
+                const shop = 'mcdonal';
+
+                const data = { username, shop };
+
+                try {
+                    const response = await fetch('/unfollow', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
+                }
+            });
+        }
+
+        const kfcFocusBtn = document.getElementById('kfc-focus-btn');
+        const kfcCancelFocusBtn = document.getElementById('kfc-cancel-focus-btn');
+
+        if (kfcFocusBtn) {
+            kfcFocusBtn.addEventListener('click', async function () {
+                const username = "{{ user.username }}";
+                const shop = 'kfc';
+
+                const data = { username, shop };
+
+                try {
+                    const response = await fetch('/attention', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
+                }
+            });
+        }
+
+        if (kfcCancelFocusBtn) {
+            kfcCancelFocusBtn.addEventListener('click', async function () {
+                console.log('test');
+                const username = "{{ user.username }}";
+                const shop = 'kfc';
+
+                const data = { username, shop };
+
+                try {
+                    const response = await fetch('/unfollow', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
+                }
+            });
+        }
+
+        const pizzahutFocusBtn = document.getElementById('pizzahut-focus-btn');
+        const pizzahutCancelFocusBtn = document.getElementById('pizzahut-cancel-focus-btn');
+
+        if (pizzahutFocusBtn) {
+            pizzahutFocusBtn.addEventListener('click', async function () {
+                const username = "{{ user.username }}";
+                const shop = 'pizzahut';
+
+                const data = { username, shop };
+
+                try {
+                    const response = await fetch('/attention', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
+                }
+            });
+        }
+
+        if (pizzahutCancelFocusBtn) {
+            pizzahutCancelFocusBtn.addEventListener('click', async function () {
+                console.log('test');
+                const username = "{{ user.username }}";
+                const shop = 'pizzahut';
+
+                const data = { username, shop };
+
+                try {
+                    const response = await fetch('/unfollow', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
+                }
+            });
+        }
+
+        const dominoFocusBtn = document.getElementById('domino-focus-btn');
+        const dominoCancelFocusBtn = document.getElementById('domino-cancel-focus-btn');
+
+        if (dominoFocusBtn) {
+            dominoFocusBtn.addEventListener('click', async function () {
+                const username = "{{ user.username }}";
+                const shop = 'domino';
+
+                const data = { username, shop };
+
+                try {
+                    const response = await fetch('/attention', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
+                }
+            });
+        }
+
+        if (dominoCancelFocusBtn) {
+            dominoCancelFocusBtn.addEventListener('click', async function () {
+                console.log('test');
+                const username = "{{ user.username }}";
+                const shop = 'domino';
+
+                const data = { username, shop };
+
+                try {
+                    const response = await fetch('/unfollow', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
+                }
+            });
+        }
+
+        const burgerkingFocusBtn = document.getElementById('burgerking-focus-btn');
+        const burgerkingCancelFocusBtn = document.getElementById('burgerking-cancel-focus-btn');
+
+        if (burgerkingFocusBtn) {
+            burgerkingFocusBtn.addEventListener('click', async function () {
+                const username = "{{ user.username }}";
+                const shop = 'burgerking';
+
+                const data = { username, shop };
+
+                try {
+                    const response = await fetch('/attention', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
+                }
+            });
+        }
+
+        if (burgerkingCancelFocusBtn) {
+            burgerkingCancelFocusBtn.addEventListener('click', async function () {
+                console.log('test');
+                const username = "{{ user.username }}";
+                const shop = 'burgerking';
+
+                const data = { username, shop };
+
+                try {
+                    const response = await fetch('/unfollow', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
+                }
+            });
+        }
+
+        const subwayFocusBtn = document.getElementById('subway-focus-btn');
+        const subwayCancelFocusBtn = document.getElementById('subway-cancel-focus-btn');
+
+        if (subwayFocusBtn) {
+            subwayFocusBtn.addEventListener('click', async function () {
+                const username = "{{ user.username }}";
+                const shop = 'subway';
+
+                const data = { username, shop };
+
+                try {
+                    const response = await fetch('/attention', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
+                }
+            });
+        }
+
+        if (subwayCancelFocusBtn) {
+            subwayCancelFocusBtn.addEventListener('click', async function () {
+                console.log('test');
+                const username = "{{ user.username }}";
+                const shop = 'subway';
+
+                const data = { username, shop };
+
+                try {
+                    const response = await fetch('/unfollow', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
+                }
+            });
+        }
+
+        const tkkFocusBtn = document.getElementById('tkk-focus-btn');
+        const tkkCancelFocusBtn = document.getElementById('tkk-cancel-focus-btn');
+
+        if (tkkFocusBtn) {
+            tkkFocusBtn.addEventListener('click', async function () {
+                const username = "{{ user.username }}";
+                const shop = 'tkk';
+
+                const data = { username, shop };
+
+                try {
+                    const response = await fetch('/attention', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
+                }
+            });
+        }
+
+        if (tkkCancelFocusBtn) {
+            tkkCancelFocusBtn.addEventListener('click', async function () {
+                console.log('test');
+                const username = "{{ user.username }}";
+                const shop = 'tkk';
+
+                const data = { username, shop };
+
+                try {
+                    const response = await fetch('/unfollow', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
+                }
+            });
+        }
+
+    </script>
+</body>
+
+</html>

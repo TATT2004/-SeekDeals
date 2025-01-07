@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tkk</title>
+</head>
+<body>
+    <form action="/home">
+        <button>首頁</button>
+    </form>
+    <h1>最新優惠</h1>
+    <ul>
+        {% for item in data %}
+            <li>
+                <img src="https://www.tkkinc.com.tw/{{ item.src }}">
+                <h3>{{ item.title }}</h3>
+                <p>{{ item.content }}</p>
+            </li>
+        {% else %}
+            <li>目前沒有優惠活動</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

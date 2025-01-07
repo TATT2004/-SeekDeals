@@ -1,0 +1,10 @@
+{
+    "a": {
+        "password": "a",
+        "logged": false,
+        "attention": [
+            "kfc",
+            "pizzahut"
+        ]
+    }
+}
