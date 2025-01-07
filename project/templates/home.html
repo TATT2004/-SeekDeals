@@ -57,6 +57,12 @@
     </a>
     {% endif %}
 
+    {% if 'tkk' in user.attention %}
+    <a href="{{ url_for('tkk') }}">
+        <img src="{{ url_for('static', filename='tkk/images/tkk.png') }}" alt="tkk">
+    </a>
+    {% endif %}
+
     <h3>所有店家</h3>
 
     <a href="{{ url_for('mcdonal') }}">
@@ -111,6 +117,15 @@
     <button type="button" id="subway-cancel-focus-btn">取消關注</button>
     {% else %}
     <button type="button" id="subway-focus-btn">關注</button>
+    {% endif %}
+
+    <a href="{{ url_for('tkk') }}">
+        <img src="{{ url_for('static', filename='tkk/images/tkk.png') }}" alt="tkk">
+    </a>
+    {% if 'tkk' in user.attention %}
+    <button type="button" id="tkk-cancel-focus-btn">取消關注</button>
+    {% else %}
+    <button type="button" id="tkk-focus-btn">關注</button>
     {% endif %}
 
     <script>
@@ -473,6 +488,70 @@
                 console.log('test');
                 const username = "{{ user.username }}";
                 const shop = 'subway';
+
+                const data = { username, shop };
+
+                try {
+                    const response = await fetch('/unfollow', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
+                }
+            });
+        }
+
+        const tkkFocusBtn = document.getElementById('tkk-focus-btn');
+        const tkkCancelFocusBtn = document.getElementById('tkk-cancel-focus-btn');
+
+        if (tkkFocusBtn) {
+            tkkFocusBtn.addEventListener('click', async function () {
+                const username = "{{ user.username }}";
+                const shop = 'tkk';
+
+                const data = { username, shop };
+
+                try {
+                    const response = await fetch('/attention', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
+                }
+            });
+        }
+
+        if (tkkCancelFocusBtn) {
+            tkkCancelFocusBtn.addEventListener('click', async function () {
+                console.log('test');
+                const username = "{{ user.username }}";
+                const shop = 'tkk';
 
                 const data = { username, shop };
 

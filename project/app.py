@@ -187,6 +187,36 @@ def scrape_to_json_subway(url, output_file):
     
 scrape_to_json_subway('https://subway.com.tw/GoWeb2/include/index.php?Page=3', 'static/subway/discounts.json')
 
+def scrape_to_json_tkk(url, output_file):
+    # 發送 HTTP 請求
+    response = requests.get(url)
+    response.raise_for_status()  # 確認請求成功
+
+    # 解析 HTML
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    # 範例：提取文章標題和連結
+    data = []
+    items = soup.find_all('div', class_='announcement--content')
+    for item in items:
+        imgs = item.find_all('img')
+        titles = item.find_all('h2')
+        contents = item.find_all('p')
+        for img, title, content in zip(imgs, titles, contents):
+            info = {
+                'src': img.get('src'),
+                'title': title.get_text(),
+                'content': content.get_text()
+            }
+            data.append(info)
+
+    # 將資料寫入 JSON 檔案
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+    print(f"資料已成功寫入 {output_file}！")
+
+scrape_to_json_tkk('https://www.tkkinc.com.tw/event.html', 'static/tkk/discounts.json')
+
 # 路由：主頁
 @app.route('/')
 def index():
@@ -359,6 +389,13 @@ def subway():
     with open('static/subway/discounts.json', 'r', encoding='utf-8') as f:
         data = json.load(f)
     return render_template('store/subway.html', data=data)
+
+@app.route('/store/tkk')
+def tkk():
+    data = {}
+    with open('static/tkk/discounts.json', 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    return render_template('store/tkk.html', data=data)
 
 if __name__ == "__main__":
     users = {}
