@@ -86,19 +86,25 @@ def scrape_to_json_domino(url, output_file):
 
     # 提取數據
     data = []
-    items = soup.find_all('div', class_='col-12 col-md-6 col-lg-4 mt-3')
+    items = soup.find_all('div', class_='col-12 col-md-6 col-lg-4 mt-3')  # 找到所有產品容器
     for item in items:
         img_tag = item.find('img', class_='img-fluid product-card-img w-100')
-        imgs = img_tag.get('src')
-        titles = item.find('h4', class_='product-title')
-        contents = item.find_all('li')
-        for img, title, content in zip(imgs, titles, contents):
-            info = {
-                'src': imgs,
-                'title': title.get_text(),
-                'content': content.get_text()
-            }
-            data.append(info)
+        img_src = img_tag.get('src') if img_tag else "No image"
+        title_tag = item.find('h4', class_='product-title')
+        title = title_tag.get_text(strip=True) if title_tag else "No title"
+        content_tags = item.find_all('li')
+        content_list = [li.get_text(strip=True) for li in content_tags]
+        store_tag = item.find('span', style="color:#3498db")
+        stores = store_tag.get_text(strip=True).replace("◆ 適用門市:", "") if store_tag else "No store information"
+
+        # 組裝數據
+        info = {
+            'src': img_src,
+            'title': title,
+            'content': content_list,
+            'stores': stores
+        }
+        data.append(info)
 
     # 確保目錄存在
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
