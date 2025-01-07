@@ -1,10 +1,9 @@
 {
     "a": {
         "password": "a",
-        "logged": true,
+        "logged": false,
         "attention": [
-            "mcdonal",
-            "kfc"
+            "mcdonal"
         ]
     }
 }

@@ -37,6 +37,80 @@ def scrape_to_json(url, output_file):
 
 scrape_to_json('https://www.mcdonalds.com/tw/zh-tw/whats-hot.html', 'static/mcdonal/discounts.json')
 
+def scrape_to_json_pizzahut(url, output_file):
+    # 發送 HTTP 請求
+    response = requests.get(url)
+    response.raise_for_status()  # 確認請求成功
+
+    # 解析 HTML
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    # 範例：提取文章標題和連結
+    data = []
+    items = soup.find_all('div', class_='promotion_list_item')
+    for item in items:
+        img_tag = item.find('img')
+        img_src = None
+        if img_tag and hasattr(img_tag, 'get'):
+            img_src = img_tag.get('data-original') or img_tag.get('src')
+        titles = item.find('span', class_='pro-li-name')
+        contents = item.find('p', class_='pro-list-desc')
+        for img, title, content in zip(img_src, titles, contents):
+            info = {
+                'src': img_src,
+                'title': title.get_text(),
+                'content': content.get_text()
+            }
+            data.append(info)
+
+    # 將資料寫入 JSON 檔案
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+    print(f"資料已成功寫入 {output_file}！")
+
+scrape_to_json_pizzahut('https://www.pizzahut.com.tw/promotions/?parent_id=2670', 'static/pizzahut/discounts.json')
+
+def scrape_to_json_domino(url, output_file):
+    # 創建 requests.Session
+    session = requests.Session()
+    session.headers.update({
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36'
+    })
+    
+    # 發送 HTTP 請求
+    response = session.get(url)
+    response.raise_for_status()  # 確認請求成功
+
+    # 解析 HTML
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    # 提取數據
+    data = []
+    items = soup.find_all('div', class_='col-12 col-md-6 col-lg-4 mt-3')
+    for item in items:
+        img_tag = item.find('img', class_='img-fluid product-card-img w-100')
+        imgs = img_tag.get('src')
+        titles = item.find('h4', class_='product-title')
+        contents = item.find_all('li')
+        for img, title, content in zip(imgs, titles, contents):
+            info = {
+                'src': imgs,
+                'title': title.get_text(),
+                'content': content.get_text()
+            }
+            data.append(info)
+
+    # 確保目錄存在
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
+
+    # 將資料寫入 JSON 檔案
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+
+    print(f"資料已成功寫入 {output_file}！")
+
+scrape_to_json_domino('https://www.dominos.com.tw/Alliances/Limited-20211206', 'static/domino/discounts.json')
+
 # 路由：主頁
 @app.route('/')
 def index():
@@ -181,6 +255,20 @@ def kfc():
     with open('static/kfc/discounts.json', 'r', encoding='utf-8') as f:
         data = json.load(f)
     return render_template('store/kfc.html', data=data)
+
+@app.route('/store/pizzahut')
+def pizzahut():
+    data = {}
+    with open('static/pizzahut/discounts.json', 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    return render_template('store/pizzahut.html', data=data)
+
+@app.route('/store/domino')
+def domino():
+    data = {}
+    with open('static/domino/discounts.json', 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    return render_template('store/domino.html', data=data)
 
 if __name__ == "__main__":
     users = {}

@@ -20,17 +20,34 @@
 <body>
     <h2>用戶名稱：{{ user.username }}</h2>
     <h3>關注店家</h3>
+
     {% if 'mcdonal' in user.attention %}
     <a href="{{ url_for('mcdonal') }}">
         <img src="{{ url_for('static', filename='mcdonal/images/mcdonal2.png') }}" alt="mcdonal">
     </a>
     {% endif %}
+
     {% if 'kfc' in user.attention %}
     <a href="{{ url_for('kfc') }}">
         <img src="{{ url_for('static', filename='kfc/images/kfc.png') }}" alt="kfc">
     </a>
     {% endif %}
+
+    {% if 'pizzahut' in user.attention %}
+    <a href="{{ url_for('pizzahut') }}">
+        <img src="{{ url_for('static', filename='pizzahut/images/pizzahut.png') }}" alt="pizzahut">
+    </a>
+    {% endif %}
+
+    {% if 'domino' in user.attention %}
+    <a href="{{ url_for('domino') }}">
+        <img src="{{ url_for('static', filename='domino/images/domino.png') }}" alt="domino">
+    </a>
+    {% endif %}
+
+
     <h3>所有店家</h3>
+
     <a href="{{ url_for('mcdonal') }}">
         <img src="{{ url_for('static', filename='mcdonal/images/mcdonal2.png') }}" alt="mcdonal">
     </a>
@@ -39,6 +56,7 @@
     {% else %}
     <button type="button" id="mcdonal-focus-btn">關注</button>
     {% endif %}
+
     <a href="{{ url_for('kfc') }}">
         <img src="{{ url_for('static', filename='kfc/images/kfc.png') }}" alt="kfc">
     </a>
@@ -46,6 +64,24 @@
     <button type="button" id="kfc-cancel-focus-btn">取消關注</button>
     {% else %}
     <button type="button" id="kfc-focus-btn">關注</button>
+    {% endif %}
+
+    <a href="{{ url_for('pizzahut') }}">
+        <img src="{{ url_for('static', filename='pizzahut/images/pizzahut.png') }}" alt="pizzahut">
+    </a>
+    {% if 'pizzahut' in user.attention %}
+    <button type="button" id="pizzahut-cancel-focus-btn">取消關注</button>
+    {% else %}
+    <button type="button" id="pizzahut-focus-btn">關注</button>
+    {% endif %}
+
+    <a href="{{ url_for('domino') }}">
+        <img src="{{ url_for('static', filename='domino/images/domino.png') }}" alt="domino">
+    </a>
+    {% if 'domino' in user.attention %}
+    <button type="button" id="domino-cancel-focus-btn">取消關注</button>
+    {% else %}
+    <button type="button" id="domino-focus-btn">關注</button>
     {% endif %}
     <script>
         console.log('{{ user.attention }}');
@@ -151,6 +187,134 @@
                 console.log('test');
                 const username = "{{ user.username }}";
                 const shop = 'kfc';
+
+                const data = { username, shop };
+
+                try {
+                    const response = await fetch('/unfollow', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
+                }
+            });
+        }
+
+        const pizzahutFocusBtn = document.getElementById('pizzahut-focus-btn');
+        const pizzahutCancelFocusBtn = document.getElementById('pizzahut-cancel-focus-btn');
+
+        if (pizzahutFocusBtn) {
+            pizzahutFocusBtn.addEventListener('click', async function () {
+                const username = "{{ user.username }}";
+                const shop = 'pizzahut';
+
+                const data = { username, shop };
+
+                try {
+                    const response = await fetch('/attention', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
+                }
+            });
+        }
+
+        if (pizzahutCancelFocusBtn) {
+            pizzahutCancelFocusBtn.addEventListener('click', async function () {
+                console.log('test');
+                const username = "{{ user.username }}";
+                const shop = 'pizzahut';
+
+                const data = { username, shop };
+
+                try {
+                    const response = await fetch('/unfollow', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
+                }
+            });
+        }
+
+        const dominoFocusBtn = document.getElementById('domino-focus-btn');
+        const dominoCancelFocusBtn = document.getElementById('domino-cancel-focus-btn');
+
+        if (dominoFocusBtn) {
+            dominoFocusBtn.addEventListener('click', async function () {
+                const username = "{{ user.username }}";
+                const shop = 'domino';
+
+                const data = { username, shop };
+
+                try {
+                    const response = await fetch('/attention', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
+                }
+            });
+        }
+
+        if (dominoCancelFocusBtn) {
+            dominoCancelFocusBtn.addEventListener('click', async function () {
+                console.log('test');
+                const username = "{{ user.username }}";
+                const shop = 'domino';
 
                 const data = { username, shop };
 

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>必勝客</title>
+</head>
+<body>
+    <h1>最新優惠</h1>
+    <ul>
+        {% for item in data %}
+            <li>
+                <img src="{{ item.src }}">
+            </li>
+        {% else %}
+            <li>目前沒有優惠活動</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
