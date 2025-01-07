@@ -147,6 +147,46 @@ def scrape_to_json_burgerking(url, output_file):
 
 scrape_to_json_burgerking('https://www.burgerking.com.tw/category/6', 'static/burgerking/discounts.json')
 
+def scrape_to_json_subway(url, output_file):
+    # 發送 HTTP 請求
+    response = requests.get(url)
+    response.raise_for_status()  # 確認請求成功
+
+    # 解析 HTML
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    # 範例：提取文章標題和連結
+    data = []
+    seen_titles = set()  # 用於跟蹤已處理的標題
+    items = soup.find_all('div', class_='event-list')
+    valid_items = [item for item in items if 'event-close' not in item.a.get('class', [])]
+    for item in valid_items:
+        img_tag = item.find('img', class_='img-fluid')
+        img_src = img_tag.get('src') if img_tag else "No image"
+        title_tag = item.find('h5')
+        content_tag = item.find('p')
+        title = title_tag.get_text(strip=True) if title_tag else "No title"
+        content = content_tag.get_text(strip=True) if content_tag else "No content"
+        # 跳過重複的標題
+        if title in seen_titles:
+            continue
+        seen_titles.add(title)  # 記錄標題
+
+        # 組裝數據
+        info = {
+            'src': img_src,
+            'title': title,
+            'content': content
+        }
+        data.append(info)
+
+    # 將資料寫入 JSON 檔案
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+    print(f"資料已成功寫入 {output_file}！")
+    
+scrape_to_json_subway('https://subway.com.tw/GoWeb2/include/index.php?Page=3', 'static/subway/discounts.json')
+
 # 路由：主頁
 @app.route('/')
 def index():
@@ -312,6 +352,13 @@ def burgerking():
     with open('static/burgerking/discounts.json', 'r', encoding='utf-8') as f:
         data = json.load(f)
     return render_template('store/burgerking.html', data=data)
+
+@app.route('/store/subway')
+def subway():
+    data = {}
+    with open('static/subway/discounts.json', 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    return render_template('store/subway.html', data=data)
 
 if __name__ == "__main__":
     users = {}
