@@ -1,25 +1,111 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>肯德基</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            background-color: #ff0000;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .home-btn {
+            display: inline-block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            background: #f4f4f4;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        li img {
+            width: 200px;
+            height: auto;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        li h3 {
+            margin: 0 0 10px;
+            color: #ff0000;
+        }
+
+        li p {
+            margin: 0;
+            color: #555;
+        }
+    </style>
 </head>
+
 <body>
-    <form action="/home">
-        <button>首頁</button>
-    </form>
-    <h1>最新優惠</h1>
-    <ul>
-        {% for item in data %}
+    <header>
+        肯德基
+    </header>
+    <main>
+        <a href="/home" class="home-btn">首頁</a>
+        <h1>最新優惠</h1>
+        <ul>
+            {% for item in data %}
             <li>
-                <img src="https://kfcoosfs.kfcclub.com.tw/{{ item.src }}">
-                <h3>{{ item.title }}</h3>
-                <p>{{ item.content }}</p>
+                <img src="https://kfcoosfs.kfcclub.com.tw/{{ item.src }}" alt="{{ item.title }}">
+                <div>
+                    <h3>{{ item.title }}</h3>
+                    <p>{{ item.content }}</p>
+                </div>
             </li>
-        {% else %}
+            {% else %}
             <li>目前沒有優惠活動</li>
-        {% endfor %}
-    </ul>
+            {% endfor %}
+        </ul>
+    </main>
 </body>
+
 </html>

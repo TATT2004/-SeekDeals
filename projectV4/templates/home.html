@@ -14,15 +14,49 @@
             transform: scale(1.1);
             /* 放大 10% */
         }
+
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 1.5em;
+        }
+
+        .home-btn {
+            display: inline-block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        img {
+            width: 250px;
+            height: auto;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 
 <body>
-    <h2>用戶名稱：{{ user.username }}</h2>
-    <form action="/logout">
-        <button>登出</button>
-    </form>
-    <h3>關注店家</h3>
+    <header>
+        折折搜-SeekDeals
+    </header>
+    <h2>
+        用戶名稱：{{ user.username }}
+    </h2>
+    <a href="/logout" class="home-btn">登出</a>
+    <h2>
+        關注店家
+    </h2>
 
     {% if 'mcdonal' in user.attention %}
     <a href="{{ url_for('mcdonal') }}">
@@ -73,7 +107,7 @@
     <button type="button" id="tkk-cancel-focus-btn">取消關注</button>
     {% endif %}
 
-    <h3>所有店家</h3>
+    <h2>所有店家</h2>
 
     <a href="{{ url_for('mcdonal') }}">
         <img src="{{ url_for('static', filename='mcdonal/images/mcdonal2.png') }}" alt="mcdonal">

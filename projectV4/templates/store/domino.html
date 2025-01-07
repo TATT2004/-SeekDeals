@@ -1,29 +1,123 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-TW">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>達美樂</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            background-color: #0044cc;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .home-btn {
+            display: block;
+            width: 120px;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .home-btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+            background: #f4f4f4;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        li img {
+            width: 300px;
+            height: auto;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            align-self: center;
+        }
+
+        li h3 {
+            margin: 0;
+            color: #0044cc;
+            font-size: 1.4em;
+        }
+
+        li p {
+            margin: 5px 0;
+            color: #555;
+            line-height: 1.6;
+        }
+    </style>
 </head>
 
 <body>
-    <form action="/home">
-        <button>首頁</button>
-    </form>
-    <h1>最新優惠</h1>
-    <ul>
-        {% for item in data %}
-        <li>
-            <img src="{{ item.src }}">
-            <h3>{{ item.title }}</h3>
-            <p>{{ item.content }}</p>
-            <p>{{ item.stores }}</p>
-        </li>
-        {% else %}
-        <li>目前沒有優惠活動</li>
-        {% endfor %}
-    </ul>
+    <header>
+        達美樂
+    </header>
+    <main>
+        <a href="/home" class="home-btn">首頁</a>
+        <h1>最新優惠</h1>
+        <ul>
+            {% for item in data %}
+            <li>
+                <img src="{{ item.src }}" alt="{{ item.title }}">
+                <h3>{{ item.title }}</h3>
+                <p>{{ item.content }}</p>
+                <p>適用門市: {{ item.stores }}</p>
+            </li>
+            {% else %}
+            <li>目前沒有優惠活動</li>
+            {% endfor %}
+        </ul>
+    </main>
 </body>
 
 </html>
