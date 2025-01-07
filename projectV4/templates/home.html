@@ -6,15 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>首頁</title>
     <style>
-        a img {
-            transition: transform 0.3s ease;
-        }
-
-        a img:hover {
-            transform: scale(1.1);
-            /* 放大 10% */
-        }
-
         header {
             background-color: #007bff;
             color: white;
@@ -37,11 +28,48 @@
             text-align: center;
         }
 
-        img {
-            width: 250px;
+        .store-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px; /* 控制店家間距 */
+            justify-content: center; /* 居中對齊，減少不必要的空隙 */
+        }
+
+        .store-item {
+            display: inline-block;
+            text-align: center;
+            margin: 10px;
+        }
+
+        .store-item img {
+            display: block;
+            margin: 0 auto;
+            width: 200px;
             height: auto;
             border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .store-item img:hover {
+            transform: scale(1.1);
+        }
+
+        .store-item button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .store-item button:hover {
+            background-color: #218838;
+            transform: scale(1.05);
         }
     </style>
 </head>
@@ -54,95 +82,123 @@
         用戶名稱：{{ user.username }}
     </h2>
     <a href="/logout" class="home-btn">登出</a>
+
     <h2>
         關注店家
     </h2>
-
     {% if 'mcdonal' in user.attention %}
-    <a href="{{ url_for('mcdonal') }}">
-        <img src="{{ url_for('static', filename='mcdonal/images/mcdonal2.png') }}" alt="mcdonal">
-    </a>
-    <button type="button" id="mcdonal-cancel-focus-btn">取消關注</button>
+    <div class="store-item">
+        <a href="{{ url_for('mcdonal') }}">
+            <img src="{{ url_for('static', filename='mcdonal/images/mcdonal2.png') }}" alt="mcdonal">
+        </a>
+        <button type="button" id="mcdonal-cancel-focus-btn">取消關注</button>
+    </div>
     {% endif %}
 
     {% if 'kfc' in user.attention %}
-    <a href="{{ url_for('kfc') }}">
-        <img src="{{ url_for('static', filename='kfc/images/kfc.png') }}" alt="kfc">
-    </a>
-    <button type="button" id="kfc-cancel-focus-btn">取消關注</button>
+    <div class="store-item">
+        <a href="{{ url_for('kfc') }}">
+            <img src="{{ url_for('static', filename='kfc/images/kfc.png') }}" alt="kfc">
+        </a>
+        <button type="button" id="kfc-cancel-focus-btn">取消關注</button>
+    </div>
     {% endif %}
 
     {% if 'pizzahut' in user.attention %}
-    <a href="{{ url_for('pizzahut') }}">
-        <img src="{{ url_for('static', filename='pizzahut/images/pizzahut.png') }}" alt="pizzahut">
-    </a>
-    <button type="button" id="pizzahut-cancel-focus-btn">取消關注</button>
+    <div class="store-item">
+        <a href="{{ url_for('pizzahut') }}">
+            <img src="{{ url_for('static', filename='pizzahut/images/pizzahut.png') }}" alt="pizzahut">
+        </a>
+        <button type="button" id="pizzahut-cancel-focus-btn">取消關注</button>
+    </div>
     {% endif %}
 
     {% if 'domino' in user.attention %}
-    <a href="{{ url_for('domino') }}">
-        <img src="{{ url_for('static', filename='domino/images/domino.png') }}" alt="domino">
-    </a>
-    <button type="button" id="domino-cancel-focus-btn">取消關注</button>
+    <div class="store-item">
+        <a href="{{ url_for('domino') }}">
+            <img src="{{ url_for('static', filename='domino/images/domino.png') }}" alt="domino">
+        </a>
+        <button type="button" id="domino-cancel-focus-btn">取消關注</button>
+    </div>
     {% endif %}
 
     {% if 'burgerking' in user.attention %}
-    <a href="{{ url_for('burgerking') }}">
-        <img src="{{ url_for('static', filename='burgerking/images/burgerking.png') }}" alt="burgerking">
-    </a>
-    <button type="button" id="burgerking-cancel-focus-btn">取消關注</button>
+    <div class="store-item">
+        <a href="{{ url_for('burgerking') }}">
+            <img src="{{ url_for('static', filename='burgerking/images/burgerking.png') }}" alt="burgerking">
+        </a>
+        <button type="button" id="burgerking-cancel-focus-btn">取消關注</button>
+    </div>
     {% endif %}
 
     {% if 'subway' in user.attention %}
-    <a href="{{ url_for('subway') }}">
-        <img src="{{ url_for('static', filename='subway/images/subway.png') }}" alt="subway">
-    </a>
-    <button type="button" id="subway-cancel-focus-btn">取消關注</button>
+    <div class="store-item">
+        <a href="{{ url_for('subway') }}">
+            <img src="{{ url_for('static', filename='subway/images/subway.png') }}" alt="subway">
+        </a>
+        <button type="button" id="subway-cancel-focus-btn">取消關注</button>
+    </div>
     {% endif %}
 
     {% if 'tkk' in user.attention %}
-    <a href="{{ url_for('tkk') }}">
-        <img src="{{ url_for('static', filename='tkk/images/tkk.png') }}" alt="tkk">
-    </a>
-    <button type="button" id="tkk-cancel-focus-btn">取消關注</button>
+    <div class="store-item">
+        <a href="{{ url_for('tkk') }}">
+            <img src="{{ url_for('static', filename='tkk/images/tkk.png') }}" alt="tkk">
+        </a>
+        <button type="button" id="tkk-cancel-focus-btn">取消關注</button>
+    </div>
     {% endif %}
 
     <h2>所有店家</h2>
 
-    <a href="{{ url_for('mcdonal') }}">
-        <img src="{{ url_for('static', filename='mcdonal/images/mcdonal2.png') }}" alt="mcdonal">
-    </a>
-    <button type="button" id="mcdonal-focus-btn">關注</button>
+    <div class="store-item">
+        <a href="{{ url_for('mcdonal') }}">
+            <img src="{{ url_for('static', filename='mcdonal/images/mcdonal2.png') }}" alt="mcdonal">
+        </a>
+        <button type="button" id="mcdonal-focus-btn">關注</button>
+    </div>
 
-    <a href="{{ url_for('kfc') }}">
-        <img src="{{ url_for('static', filename='kfc/images/kfc.png') }}" alt="kfc">
-    </a>
-    <button type="button" id="kfc-focus-btn">關注</button>
+    <div class="store-item">
+        <a href="{{ url_for('kfc') }}">
+            <img src="{{ url_for('static', filename='kfc/images/kfc.png') }}" alt="kfc">
+        </a>
+        <button type="button" id="kfc-focus-btn">關注</button>
+    </div>
 
-    <a href="{{ url_for('pizzahut') }}">
-        <img src="{{ url_for('static', filename='pizzahut/images/pizzahut.png') }}" alt="pizzahut">
-    </a>
-    <button type="button" id="pizzahut-focus-btn">關注</button>
+    <div class="store-item">
+        <a href="{{ url_for('pizzahut') }}">
+            <img src="{{ url_for('static', filename='pizzahut/images/pizzahut.png') }}" alt="pizzahut">
+        </a>
+        <button type="button" id="pizzahut-focus-btn">關注</button>
+    </div>
 
-    <a href="{{ url_for('domino') }}">
-        <img src="{{ url_for('static', filename='domino/images/domino.png') }}" alt="domino">
-    </a>
-    <button type="button" id="domino-focus-btn">關注</button>
+    <div class="store-item">
+        <a href="{{ url_for('domino') }}">
+            <img src="{{ url_for('static', filename='domino/images/domino.png') }}" alt="domino">
+        </a>
+        <button type="button" id="domino-focus-btn">關注</button>
+    </div>
 
-    <a href="{{ url_for('burgerking') }}">
-        <img src="{{ url_for('static', filename='burgerking/images/burgerking.png') }}" alt="burgerking">
-    </a>
-    <button type="button" id="burgerking-focus-btn">關注</button>
+    <div class="store-item">
+        <a href="{{ url_for('burgerking') }}">
+            <img src="{{ url_for('static', filename='burgerking/images/burgerking.png') }}" alt="burgerking">
+        </a>
+        <button type="button" id="burgerking-focus-btn">關注</button>
+    </div>
 
-    <a href="{{ url_for('subway') }}">
-        <img src="{{ url_for('static', filename='subway/images/subway.png') }}" alt="subway">
-    </a>
-    <button type="button" id="subway-focus-btn">關注</button>
+    <div class="store-item">
+        <a href="{{ url_for('subway') }}">
+            <img src="{{ url_for('static', filename='subway/images/subway.png') }}" alt="subway">
+        </a>
+        <button type="button" id="subway-focus-btn">關注</button>
+    </div>
 
-    <a href="{{ url_for('tkk') }}">
-        <img src="{{ url_for('static', filename='tkk/images/tkk.png') }}" alt="tkk">
-    </a>
-    <button type="button" id="tkk-focus-btn">關注</button>
+    <div class="store-item">
+        <a href="{{ url_for('tkk') }}">
+            <img src="{{ url_for('static', filename='tkk/images/tkk.png') }}" alt="tkk">
+        </a>
+        <button type="button" id="tkk-focus-btn">關注</button>
+    </div>
 
     <script>
         console.log('{{ user.attention }}');

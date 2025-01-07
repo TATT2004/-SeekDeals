@@ -1,20 +1,17 @@
 {
     "a": {
         "password": "a",
-        "logged": true,
+        "logged": false,
         "attention": [
-            "domino",
-            "kfc",
-            "pizzahut",
             "mcdonal",
-            "burgerking",
-            "subway",
-            "tkk"
+            "tkk",
+            "pizzahut",
+            "kfc"
         ]
     },
     "\u6c92": {
         "password": "123",
-        "logged": true,
+        "logged": false,
         "attention": []
     }
 }
