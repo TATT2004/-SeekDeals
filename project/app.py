@@ -111,6 +111,42 @@ def scrape_to_json_domino(url, output_file):
 
 scrape_to_json_domino('https://www.dominos.com.tw/Alliances/Limited-20211206', 'static/domino/discounts.json')
 
+def scrape_to_json_burgerking(url, output_file):
+     # 發送 HTTP 請求
+    response = requests.get(url)
+    response.raise_for_status()  # 確認請求成功
+
+    # 解析 HTML
+    soup = BeautifulSoup(response.text, 'html.parser')
+
+    # 範例：提取文章標題和連結
+    data = []
+    items = soup.find_all('a', href=True)
+
+    for item in items:
+        img_container = item.find('div', class_='flex justify-center px-3')
+        title_container = item.find('div', class_='md:px-0 md:px-10 md:text-xl px-2 text-center text-lg')
+        content_container = item.find('div', class_='flex flex-wrap justify-center md:flex-nowrap mt-3')
+
+        if img_container and title_container and content_container:
+            img_tag = img_container.find('img')
+            img_src = img_tag.get('src') if img_tag else "No image"
+            title = title_container.get_text(strip=True)
+            content = content_container.get_text(strip=True)
+            info = {
+                'src': img_src,
+                'title': title,
+                'content': content
+            }
+            data.append(info)
+
+    # 將資料寫入 JSON 檔案
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+    print(f"資料已成功寫入 {output_file}！")
+
+scrape_to_json_burgerking('https://www.burgerking.com.tw/category/6', 'static/burgerking/discounts.json')
+
 # 路由：主頁
 @app.route('/')
 def index():
@@ -269,6 +305,13 @@ def domino():
     with open('static/domino/discounts.json', 'r', encoding='utf-8') as f:
         data = json.load(f)
     return render_template('store/domino.html', data=data)
+
+@app.route('/store/burgerking')
+def burgerking():
+    data = {}
+    with open('static/burgerking/discounts.json', 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    return render_template('store/burgerking.html', data=data)
 
 if __name__ == "__main__":
     users = {}

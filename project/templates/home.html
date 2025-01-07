@@ -45,6 +45,13 @@
     </a>
     {% endif %}
 
+    {% if 'burgerking' in user.attention %}
+    <a href="{{ url_for('burgerking') }}">
+        <img src="{{ url_for('static', filename='burgerking/images/burgerking.png') }}" alt="burgerking">
+    </a>
+    {% endif %}
+
+
 
     <h3>所有店家</h3>
 
@@ -83,6 +90,16 @@
     {% else %}
     <button type="button" id="domino-focus-btn">關注</button>
     {% endif %}
+
+    <a href="{{ url_for('burgerking') }}">
+        <img src="{{ url_for('static', filename='burgerking/images/burgerking.png') }}" alt="burgerking">
+    </a>
+    {% if 'burgerking' in user.attention %}
+    <button type="button" id="burgerking-cancel-focus-btn">取消關注</button>
+    {% else %}
+    <button type="button" id="burgerking-focus-btn">關注</button>
+    {% endif %}
+
     <script>
         console.log('{{ user.attention }}');
         const mcdonalFocusBtn = document.getElementById('mcdonal-focus-btn');
@@ -315,6 +332,70 @@
                 console.log('test');
                 const username = "{{ user.username }}";
                 const shop = 'domino';
+
+                const data = { username, shop };
+
+                try {
+                    const response = await fetch('/unfollow', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
+                }
+            });
+        }
+
+        const burgerkingFocusBtn = document.getElementById('burgerking-focus-btn');
+        const burgerkingCancelFocusBtn = document.getElementById('burgerking-cancel-focus-btn');
+
+        if (burgerkingFocusBtn) {
+            burgerkingFocusBtn.addEventListener('click', async function () {
+                const username = "{{ user.username }}";
+                const shop = 'burgerking';
+
+                const data = { username, shop };
+
+                try {
+                    const response = await fetch('/attention', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert(`${result.message}`);
+                        window.location.href = '/home';
+                    } else {
+                        const error = await response.json();
+                        alert(`${error.message}`);
+                    }
+                } catch (err) {
+                    alert(`錯誤：${err.message}`);
+                }
+            });
+        }
+
+        if (burgerkingCancelFocusBtn) {
+            burgerkingCancelFocusBtn.addEventListener('click', async function () {
+                console.log('test');
+                const username = "{{ user.username }}";
+                const shop = 'burgerking';
 
                 const data = { username, shop };
 
